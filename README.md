@@ -10,3 +10,4 @@
 * # TODO: Add your names and emails here
 1.-Elie Mambou ----mam13003@byui.edu
 2.-Jossue Daniel Ortiz ----ort21013@byui.edu
+3.-Isaac Cruz   ---cru21010@byui.edu
