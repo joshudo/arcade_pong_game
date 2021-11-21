@@ -1,13 +1,16 @@
 # from arcade.key import LEFT
 # from paddle import Paddle
 import arcade 
+import sys
+import os
 
 class MyGameWindow(arcade.Window):
     def __init__(self, width, height, title):
         super().__init__(width, height, title)
         self.set_location(400, 200)
-
+        self.collision_sound = arcade.load_sound('project/bounce.wav')
         arcade.set_background_color(arcade.color.MSU_GREEN)
+        
 
         self.c_x = 100
         self.c_y = 100
@@ -33,11 +36,13 @@ class MyGameWindow(arcade.Window):
     def on_update(self, delta_time):
         self.c_x += self.x_speed * delta_time
         self.c_y += self.y_speed * delta_time
+        
 
         if self.c_x > 1280 -15 or self.c_x < 0 + 15:
             self.x_speed *= -1
         if self.c_y > 720 - 15 or self.c_x < 0 + 15:
             self.y_speed *= -1
+            arcade.play_sound(self.collision_sound)
         if self.player1_up:
             self.player1_y += self.player1_speed * delta_time
         if self.player1_down:
