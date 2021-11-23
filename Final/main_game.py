@@ -6,13 +6,38 @@ from paddle import Paddle
 from constants import *
 
 
-path1 = "platform.png"
-path2 = "ball1.png"
+path1 = "Final/platform.png"
+path2 = "Final/ball1.png"
 
 
-class MyWindow(arcade.Window):
+class InstructionView(arcade.View):
+
+    def on_show(self):
+        arcade.set_background_color(arcade.color.DARK_ELECTRIC_BLUE)
+        arcade.set_viewport(0, self.window.width, 0, self.window.height)
+        
+
+    def on_draw(self):
+        arcade.set_background_color(arcade.color.DARK_ELECTRIC_BLUE)
+        arcade.start_render()
+        arcade.draw_text("Instructions",  self.window.width / 2, self.window.height / 1.5,
+                         arcade.color.WHITE, bold=True, font_size=50,anchor_x="center")
+        arcade.draw_text('Left player controls: "W" to move paddle up. "S" to move paddle down', self.window.width / 2, self.window.height / 2-30,
+                         arcade.color.WHITE, bold=True,font_size=11, anchor_x="center")
+        arcade.draw_text('Right player controls: "Up arrow" to move paddle up. "Down arrow" to move paddle down', self.window.width / 2, self.window.height / 2-55,
+                         arcade.color.WHITE, bold=True, font_size=11, anchor_x="center")
+        arcade.draw_text("Click to advance", self.window.width / 2, self.window.height / 2-150,
+                         arcade.color.WHITE, italic=True,font_size=20, anchor_x="center")
+
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        game_view = MyWindow()
+        self.window.show_view(game_view)
+        
+        
+
+class MyWindow(arcade.View):
     def __init__(self):
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, 'PONG', update_rate=0.008)
+        super().__init__()
 
         self.pong_A_score = 0
         self.pong_B_score = 0
@@ -48,6 +73,7 @@ class MyWindow(arcade.Window):
         self.ball_change_y = self.ball.change_y
 
     def on_draw(self):
+        arcade.set_background_color(arcade.color.BLACK)
         arcade.start_render()
 
         arcade.draw_text(f' Player 1: {self.pong_A_score} | Player 2: {self.pong_B_score}', SCREEN_WIDTH/2, SCREEN_HEIGHT-30, arcade.csscolor.WHITE, 14)
@@ -131,13 +157,3 @@ class MyWindow(arcade.Window):
             self.pongA_change = 0
         if symbol == arcade.key.UP or symbol == arcade.key.DOWN:
             self.pongB_change = 0
-
-
-
-
-"""def main():
-    win = MyWindow()
-    arcade.run()
-
-if __name__ == '__main__':
-    main()"""

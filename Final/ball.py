@@ -13,6 +13,7 @@ class Ball():
         self.position_y = SCREEN_HEIGHT / 2
         self.change_x = BALL_SPEED
         self.change_y = BALL_SPEED
+        
 
     def position_x(self):
         return SCREEN_WIDTH / 2
