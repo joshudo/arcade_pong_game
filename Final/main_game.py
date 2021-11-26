@@ -109,14 +109,14 @@ class MyWindow(arcade.Window):
             self.ball_change_y *= -1
             arcade.play_sound(self.collision_sound, volume=0.5)
 
-        if self.pong_A_score == 3:
+        if self.pong_A_score == 10:
             arcade.start_render()
             self.background = arcade.load_texture(path3)
             arcade.draw_texture_rectangle(350, SCREEN_HEIGHT-160, 200, 200, self.background)
             arcade.finish_render()
             arcade.play_sound(self.collision_sound, volume= 0)
 
-        if self.pong_B_score == 3:
+        if self.pong_B_score == 10:
             arcade.start_render()
             self.background2 = arcade.load_texture(path4)
             arcade.draw_texture_rectangle(350, SCREEN_HEIGHT-160, 200, 200, self.background2)
