@@ -1,23 +1,30 @@
 import arcade
 import sys
 from time import sleep
+
+from arcade.window_commands import pause
 from ball import Ball
 from paddle import Paddle
 from constants import *
+import os
+import PIL.Image
 
-
-path1 = "platform.png"
-path2 = "ball1.png"
+path1 = "Final/platform.png"
+path2 = "Final/ball1.png"
+path3 = "Final/p1.png"
+path4 = "Final/p2.jpg"
 
 
 class MyWindow(arcade.Window):
     def __init__(self):
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, 'PONG', update_rate=0.008)
+        self.collision_sound = arcade.load_sound('project/bounce.wav')
 
         self.pong_A_score = 0
         self.pong_B_score = 0
         self.ball = Ball()
         self.paddle = Paddle()
+
 
         """self.pong_sprite_A = arcade.Sprite(path1)
         self.pong_Ax = self.paddle.pong_Ax
@@ -52,7 +59,7 @@ class MyWindow(arcade.Window):
 
         arcade.draw_text(f' Player 1: {self.pong_A_score} | Player 2: {self.pong_B_score}', SCREEN_WIDTH/2, SCREEN_HEIGHT-30, arcade.csscolor.WHITE, 14)
 
-        
+
         self.pong_sprite_A.center_x = self.pong_Ax
         self.pong_sprite_A.center_y = self.pong_Ay
         self.pong_sprite_A.draw()
@@ -69,9 +76,11 @@ class MyWindow(arcade.Window):
         
         if arcade.check_for_collision(self.ball_sprite, self.pong_sprite_A):
             self.ball_change_x = +1
+            arcade.play_sound(self.collision_sound, volume=0.5)
             
         elif arcade.check_for_collision(self.ball_sprite, self.pong_sprite_B):
             self.ball_change_x = -1
+            arcade.play_sound(self.collision_sound, volume=0.5)
       
         self.pong_Ay += self.pongA_change
         self.pong_By += self.pongB_change
@@ -86,6 +95,7 @@ class MyWindow(arcade.Window):
             self.ball_position_x = SCREEN_WIDTH / 2
             self.ball_position_y = SCREEN_HEIGHT / 2
             self.ball_change_x *= -1
+            arcade.play_sound(self.collision_sound, volume=0.5)
 
         if self.ball_position_x > SCREEN_WIDTH - 10:
            self.pong_A_score += 1
@@ -93,11 +103,26 @@ class MyWindow(arcade.Window):
            self.ball_position_x = SCREEN_WIDTH / 2
            self.ball_position_y = SCREEN_HEIGHT / 2
            self.ball_change_x *= -1
+           arcade.play_sound(self.collision_sound, volume=0.5)
 
         if self.ball_position_y < 10 or self.ball_position_y > SCREEN_HEIGHT - 10:
             self.ball_change_y *= -1
+            arcade.play_sound(self.collision_sound, volume=0.5)
 
-        
+        if self.pong_A_score == 3:
+            arcade.start_render()
+            self.background = arcade.load_texture(path3)
+            arcade.draw_texture_rectangle(350, SCREEN_HEIGHT-160, 200, 200, self.background)
+            arcade.finish_render()
+            arcade.play_sound(self.collision_sound, volume= 0)
+
+        if self.pong_B_score == 3:
+            arcade.start_render()
+            self.background2 = arcade.load_texture(path4)
+            arcade.draw_texture_rectangle(350, SCREEN_HEIGHT-160, 200, 200, self.background2)
+            arcade.finish_render()
+            arcade.play_sound(self.collision_sound, volume= 0)
+
 
         if self.pong_Ay < 50:
             self.pong_Ay += SCROLLING_SPEED
