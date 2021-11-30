@@ -43,7 +43,7 @@ class InstructionView(arcade.View):
 class MyWindow(arcade.View):
     def __init__(self):
         super().__init__()
-        self.collision_sound = arcade.load_sound('project/bounce.wav')
+        self.collision_sound = arcade.load_sound('Final/bounce.wav')
         self.pong_A_score = 0
         self.pong_B_score = 0
         self.ball = Ball()
