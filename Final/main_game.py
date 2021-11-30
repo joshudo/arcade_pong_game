@@ -42,7 +42,6 @@ class MyWindow(arcade.View):
     def __init__(self):
         super().__init__()
         self.collision_sound = arcade.load_sound('project/bounce.wav')
-
         self.pong_A_score = 0
         self.pong_B_score = 0
         self.ball = Ball()
@@ -81,8 +80,8 @@ class MyWindow(arcade.View):
         arcade.set_background_color(arcade.color.BLACK)
         arcade.start_render()
 
-        arcade.draw_text(f' Player 1: {self.pong_A_score} | Player 2: {self.pong_B_score}', SCREEN_WIDTH/2, SCREEN_HEIGHT-30, arcade.csscolor.WHITE, 14)
-
+        arcade.draw_text(f' Player 1: {self.pong_A_score} | Player 2: {self.pong_B_score}', 241, SCREEN_HEIGHT-30, arcade.csscolor.WHITE, 14)
+        arcade.draw_line(350, 500, 350, 0, arcade.color.WHITE, 2.5)
 
         self.pong_sprite_A.center_x = self.pong_Ax
         self.pong_sprite_A.center_y = self.pong_Ay
