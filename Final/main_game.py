@@ -48,6 +48,7 @@ class MyWindow(arcade.View):
         self.pong_B_score = 0
         self.ball = Ball()
         self.paddle = Paddle()
+        self.total_time = 180.0
 
 
         """self.pong_sprite_A = arcade.Sprite(path1)
@@ -85,6 +86,12 @@ class MyWindow(arcade.View):
         arcade.draw_text(f' Player 1: {self.pong_A_score} | Player 2: {self.pong_B_score}', 241, SCREEN_HEIGHT-30, arcade.csscolor.WHITE, 14)
         arcade.draw_line(350, 500, 350, 0, arcade.color.WHITE, 2.5)
 
+        #setup for the countdown timer
+        minutes = int(self.total_time) // 60
+        seconds = int(self.total_time) % 60
+        output = f"Time: {minutes:02d}:{seconds:02d}"
+        arcade.draw_text(output,SCREEN_WIDTH/5,470,arcade.color.WHITE,12)
+
         self.pong_sprite_A.center_x = self.pong_Ax
         self.pong_sprite_A.center_y = self.pong_Ay
         self.pong_sprite_A.draw()
@@ -99,6 +106,8 @@ class MyWindow(arcade.View):
 
     def update(self, delta_time: float):
         
+        self.total_time -= delta_time
+
         if arcade.check_for_collision(self.ball_sprite, self.pong_sprite_A):
             self.ball_change_x = +1
             arcade.play_sound(self.collision_sound, volume=0.5)
@@ -147,7 +156,6 @@ class MyWindow(arcade.View):
             arcade.draw_texture_rectangle(350, SCREEN_HEIGHT-160, 200, 200, self.background2)
             arcade.finish_render()
             arcade.play_sound(self.collision_sound, volume= 0)
-
 
         if self.pong_Ay < 50:
             self.pong_Ay += SCROLLING_SPEED
