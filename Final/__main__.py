@@ -1,4 +1,4 @@
-from main_game import *
+from window import *
 import arcade
 from constants import *
 
