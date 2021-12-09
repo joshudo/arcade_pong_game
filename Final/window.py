@@ -36,11 +36,11 @@ class InstructionView(arcade.View):
                          arcade.color.WHITE, italic=True,font_size=20, anchor_x="center")
                          
     def on_mouse_press(self, _x, _y, _button, _modifiers):
-        game_view = MyWindow()
+        game_view = Window()
         self.window.show_view(game_view)
 
 
-class MyWindow(arcade.View):
+class Window(arcade.View):
     def __init__(self):
         super().__init__()
         self.collision_sound = arcade.load_sound('Final/bounce.wav')
@@ -50,22 +50,11 @@ class MyWindow(arcade.View):
         self.paddle = Paddle()
         self.total_time = 180.0
 
-
-        """self.pong_sprite_A = arcade.Sprite(path1)
-        self.pong_Ax = self.paddle.pong_Ax
-        self.pong_Ay = self.paddle.pong_Ay
-        self.pongA_change = 0"""
         self.pong_sprite_A = arcade.Sprite(path1)
         self.pong_Ax = self.paddle.paddle_Ax()
         self.pong_Ay = self.paddle.paddle_Ay()
         self.pongA_change = 0
         
-
-
-        """self.pong_sprite_B = arcade.Sprite(path1)
-        self.pong_Bx = self.paddle.pong_Bx
-        self.pong_By = self.paddle.pong_By
-        self.pongB_change = 0"""
         self.pong_sprite_B = arcade.Sprite(path1)
         self.pong_Bx = self.paddle.paddle_Bx()
         self.pong_By = self.paddle.paddle_By()
@@ -156,6 +145,23 @@ class MyWindow(arcade.View):
             arcade.draw_texture_rectangle(350, SCREEN_HEIGHT-160, 200, 200, self.background2)
             arcade.finish_render()
             arcade.play_sound(self.collision_sound, volume= 0)
+        if self.total_time <= 0:
+            if self.pong_A_score > self.pong_B_score:
+                arcade.start_render()
+                self.background = arcade.load_texture(path3)
+                arcade.draw_texture_rectangle(350, SCREEN_HEIGHT-160, 200, 200, self.background)
+                arcade.finish_render()
+                arcade.play_sound(self.collision_sound, volume= 0)
+            elif self.pong_B_score > self.pong_A_score:
+                arcade.start_render()
+                self.background2 = arcade.load_texture(path4)
+                arcade.draw_texture_rectangle(350, SCREEN_HEIGHT-160, 200, 200, self.background2)
+                arcade.finish_render()
+                arcade.play_sound(self.collision_sound, volume= 0)
+            else:
+                pass
+
+
 
         if self.pong_Ay < 50:
             self.pong_Ay += SCROLLING_SPEED
