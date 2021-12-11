@@ -1,5 +1,5 @@
 import arcade
-from main_game import MyWindow
+from window import Window
 
 class InstructionView(arcade.View):
       
@@ -33,5 +33,5 @@ class InstructionView(arcade.View):
         
         """ Handle Mouse Motion """
         
-        game_view = MyWindow()
+        game_view = Window()
         self.window.show_view(game_view)
