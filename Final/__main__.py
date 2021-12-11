@@ -1,4 +1,5 @@
 from main_game import *
+from instruction import InstructionView
 import arcade
 from constants import *
 

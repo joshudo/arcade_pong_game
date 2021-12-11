@@ -4,51 +4,26 @@ from time import sleep
 
 from arcade.window_commands import pause
 from ball import Ball
+from paths import *
 from paddle import Paddle
 from constants import *
 import os
 import PIL.Image
 
-path1 = "Final/platform.png"
-path2 = "Final/ball1.png"
-path3 = "Final/p1.png"
-path4 = "Final/p2.jpg"
-
-class InstructionView(arcade.View):
-
-    def on_show(self):
-        arcade.set_background_color(arcade.color.DARK_ELECTRIC_BLUE)
-        arcade.set_viewport(0, self.window.width, 0, self.window.height)
-        
-
-    def on_draw(self):
-        arcade.set_background_color(arcade.color.DARK_ELECTRIC_BLUE)
-        arcade.start_render()
-        arcade.draw_text("Instructions",  self.window.width / 2, self.window.height / 1.5,
-                         arcade.color.WHITE, bold=True, font_size=50,anchor_x="center")
-        arcade.draw_text('Left player controls: "W" to move paddle up. "S" to move paddle down', self.window.width / 2, self.window.height / 2-15,
-                         arcade.color.WHITE, bold=True,font_size=11, anchor_x="center")
-        arcade.draw_text('Right player controls: "Up arrow" to move paddle up. "Down arrow" to move paddle down', self.window.width / 2, self.window.height / 2-30,
-                         arcade.color.WHITE, bold=True, font_size=11, anchor_x="center")
-        arcade.draw_text("First player to 10 points wins!", self.window.width / 2, self.window.height / 2-110,
-                         arcade.color.WHITE, bold=True, font_size=15, anchor_x="center")
-        arcade.draw_text("Click to advance", self.window.width / 2, self.window.height / 2-220,
-                         arcade.color.WHITE, italic=True,font_size=20, anchor_x="center")
-                         
-    def on_mouse_press(self, _x, _y, _button, _modifiers):
-        game_view = MyWindow()
-        self.window.show_view(game_view)
-
 
 class MyWindow(arcade.View):
     def __init__(self):
+        
+        """ Game Initializer """
+        # Call the parent class (Sprite) Initializer        
         super().__init__()
-        self.collision_sound = arcade.load_sound('Final/bounce.wav')
+        self.collision_sound = arcade.load_sound(path5)
         self.pong_A_score = 0
         self.pong_B_score = 0
         self.ball = Ball()
         self.paddle = Paddle()
         self.total_time = 180.0
+        self.paused = False
 
 
         """self.pong_sprite_A = arcade.Sprite(path1)
@@ -80,9 +55,13 @@ class MyWindow(arcade.View):
         self.ball_change_y = self.ball.change_y
 
     def on_draw(self):
+        
+        """ Draw everything """
+        
+        #Set the background color of the screen
         arcade.set_background_color(arcade.color.BLACK)
         arcade.start_render()
-
+        # Print the score
         arcade.draw_text(f' Player 1: {self.pong_A_score} | Player 2: {self.pong_B_score}', 241, SCREEN_HEIGHT-30, arcade.csscolor.WHITE, 14)
         arcade.draw_line(350, 500, 350, 0, arcade.color.WHITE, 2.5)
 
@@ -104,10 +83,17 @@ class MyWindow(arcade.View):
         self.ball_sprite.center_y = self.ball_position_y
         self.ball_sprite.draw()
 
+    # Update the position of the ball
     def update(self, delta_time: float):
+        
+        """ Movement and game logic that updates all game objects """
+        
+        if self.paused:
+            return
         
         self.total_time -= delta_time
 
+        #Check collisions bewtween main Sprites
         if arcade.check_for_collision(self.ball_sprite, self.pong_sprite_A):
             self.ball_change_x = +1
             arcade.play_sound(self.collision_sound, volume=0.5)
@@ -119,7 +105,7 @@ class MyWindow(arcade.View):
         self.pong_Ay += self.pongA_change
         self.pong_By += self.pongB_change
         
-
+        #Changing position of the ball according to coordinates
         self.ball_position_x += self.ball_change_x
         self.ball_position_y += self.ball_change_y
 
@@ -143,9 +129,11 @@ class MyWindow(arcade.View):
             self.ball_change_y *= -1
             arcade.play_sound(self.collision_sound, volume=0.5)
 
+        #Condition to check which player or pong wins when reaching a score of 10
         if self.pong_A_score == 10:
             arcade.start_render()
             self.background = arcade.load_texture(path3)
+            # Get a rectangle object and get the height of the screen
             arcade.draw_texture_rectangle(350, SCREEN_HEIGHT-160, 200, 200, self.background)
             arcade.finish_render()
             arcade.play_sound(self.collision_sound, volume= 0)
@@ -156,7 +144,8 @@ class MyWindow(arcade.View):
             arcade.draw_texture_rectangle(350, SCREEN_HEIGHT-160, 200, 200, self.background2)
             arcade.finish_render()
             arcade.play_sound(self.collision_sound, volume= 0)
-
+        
+        # Movement of paddle according to y coordinates
         if self.pong_Ay < 50:
             self.pong_Ay += SCROLLING_SPEED
         if self.pong_Ay > SCREEN_HEIGHT-50:
@@ -169,7 +158,22 @@ class MyWindow(arcade.View):
 
 
     def on_key_press(self, symbol: int, modifiers: int):
+        #Keyboard binding
         
+        """Handle user keyboard input
+        Q: Quit the game
+        P: Pause/unpause the game
+        W/S: Move Up, Down
+        Arrows: Move Up, Down
+        Arguments:
+            symbol {int} -- Which key was pressed
+            modifiers {int} -- Which modifiers were pressed
+        """
+        
+        if symbol == arcade.key.P:
+            self.paused = not self.paused
+        if symbol == arcade.key.Q:
+            arcade.close_window()
         if symbol == arcade.key.W:
             self.pongA_change = SCROLLING_SPEED
         if symbol == arcade.key.S:
@@ -183,8 +187,15 @@ class MyWindow(arcade.View):
             if user == 'Y' or user == 'y':
                 print("Thanks for playing")
             sys.exit()"""
-
+    #set key controls to hit the ball
     def on_key_release(self, symbol: int, modifiers: int):
+        
+        """Undo movement vectors when movement keys are released
+        Arguments:
+            symbol {int} -- Which key was pressed
+            modifiers {int} -- Which modifiers were pressed
+        """
+        
         if symbol == arcade.key.W or symbol == arcade.key.S:
             self.pongA_change = 0
         if symbol == arcade.key.UP or symbol == arcade.key.DOWN:
