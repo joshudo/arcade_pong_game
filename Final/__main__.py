@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-from main_game import *
-from instruction import InstructionView
-=======
-from window import *
->>>>>>> 34b7843a9fbdfff1bdb95cfa8c5002db87891512
+from instruction import *
 import arcade
 from constants import *
 
