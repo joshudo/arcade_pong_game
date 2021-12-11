@@ -10,8 +10,41 @@ from constants import *
 import os
 import PIL.Image
 
+<<<<<<< HEAD:Final/main_game.py
+=======
+path1 = "Final/platform.png"
+path2 = "Final/ball1.png"
+path3 = "Final/p1.png"
+path4 = "Final/p2.jpg"
 
-class MyWindow(arcade.View):
+class InstructionView(arcade.View):
+
+    def on_show(self):
+        arcade.set_background_color(arcade.color.DARK_ELECTRIC_BLUE)
+        arcade.set_viewport(0, self.window.width, 0, self.window.height)
+        
+
+    def on_draw(self):
+        arcade.set_background_color(arcade.color.DARK_ELECTRIC_BLUE)
+        arcade.start_render()
+        arcade.draw_text("Instructions",  self.window.width / 2, self.window.height / 1.5,
+                         arcade.color.WHITE, bold=True, font_size=50,anchor_x="center")
+        arcade.draw_text('Left player controls: "W" to move paddle up. "S" to move paddle down', self.window.width / 2, self.window.height / 2-15,
+                         arcade.color.WHITE, bold=True,font_size=11, anchor_x="center")
+        arcade.draw_text('Right player controls: "Up arrow" to move paddle up. "Down arrow" to move paddle down', self.window.width / 2, self.window.height / 2-30,
+                         arcade.color.WHITE, bold=True, font_size=11, anchor_x="center")
+        arcade.draw_text("First player to 10 points wins!", self.window.width / 2, self.window.height / 2-110,
+                         arcade.color.WHITE, bold=True, font_size=15, anchor_x="center")
+        arcade.draw_text("Click to advance", self.window.width / 2, self.window.height / 2-220,
+                         arcade.color.WHITE, italic=True,font_size=20, anchor_x="center")
+                         
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        game_view = Window()
+        self.window.show_view(game_view)
+
+>>>>>>> 34b7843a9fbdfff1bdb95cfa8c5002db87891512:Final/window.py
+
+class Window(arcade.View):
     def __init__(self):
         
         """ Game Initializer """
@@ -25,22 +58,11 @@ class MyWindow(arcade.View):
         self.total_time = 180.0
         self.paused = False
 
-
-        """self.pong_sprite_A = arcade.Sprite(path1)
-        self.pong_Ax = self.paddle.pong_Ax
-        self.pong_Ay = self.paddle.pong_Ay
-        self.pongA_change = 0"""
         self.pong_sprite_A = arcade.Sprite(path1)
         self.pong_Ax = self.paddle.paddle_Ax()
         self.pong_Ay = self.paddle.paddle_Ay()
         self.pongA_change = 0
         
-
-
-        """self.pong_sprite_B = arcade.Sprite(path1)
-        self.pong_Bx = self.paddle.pong_Bx
-        self.pong_By = self.paddle.pong_By
-        self.pongB_change = 0"""
         self.pong_sprite_B = arcade.Sprite(path1)
         self.pong_Bx = self.paddle.paddle_Bx()
         self.pong_By = self.paddle.paddle_By()
@@ -144,8 +166,29 @@ class MyWindow(arcade.View):
             arcade.draw_texture_rectangle(350, SCREEN_HEIGHT-160, 200, 200, self.background2)
             arcade.finish_render()
             arcade.play_sound(self.collision_sound, volume= 0)
+<<<<<<< HEAD:Final/main_game.py
         
         # Movement of paddle according to y coordinates
+=======
+        if self.total_time <= 0:
+            if self.pong_A_score > self.pong_B_score:
+                arcade.start_render()
+                self.background = arcade.load_texture(path3)
+                arcade.draw_texture_rectangle(350, SCREEN_HEIGHT-160, 200, 200, self.background)
+                arcade.finish_render()
+                arcade.play_sound(self.collision_sound, volume= 0)
+            elif self.pong_B_score > self.pong_A_score:
+                arcade.start_render()
+                self.background2 = arcade.load_texture(path4)
+                arcade.draw_texture_rectangle(350, SCREEN_HEIGHT-160, 200, 200, self.background2)
+                arcade.finish_render()
+                arcade.play_sound(self.collision_sound, volume= 0)
+            else:
+                pass
+
+
+
+>>>>>>> 34b7843a9fbdfff1bdb95cfa8c5002db87891512:Final/window.py
         if self.pong_Ay < 50:
             self.pong_Ay += SCROLLING_SPEED
         if self.pong_Ay > SCREEN_HEIGHT-50:
